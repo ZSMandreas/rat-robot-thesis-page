@@ -109,6 +109,22 @@
   </div>
 </section>
 
+<!-- ===================== MOTIVATION ===================== -->
+<section class="section" style="background:#fff;">
+  <div class="container is-max-desktop">
+    <div class="has-text-centered">
+      <h2 class="title is-3">Motivation</h2>
+      <p class="subtitle is-6" style="color:#666;max-width:42rem;margin:0 auto 1.2rem;">
+        Small quadruped rat robots must locomote efficiently on limited onboard energy.
+        This motivates learning gaits that reduce mechanical cost while preserving stable trot motion.
+      </p>
+      <video class="motivation-video" controls playsinline data-lazy>
+        <source src="static/videos/motivation.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== METHOD / APPROACH ===================== -->
 <section class="section" style="background:#fff;">
   <div class="container is-max-desktop">
@@ -155,15 +171,9 @@
         </p>
       </div>
       <div class="column is-three-fifths"><div class="fig-card">
-        <img src="static/images/fig_multispeed_comparison.png" alt="Multispeed comparison">
-        <div class="caption">Cost of transport and speed tracking across the commanded-velocity sweep
-          &mdash; Ours stays below both baselines throughout.</div></div></div>
-    </div>
-
-    <div class="fig-card" style="margin-top:0.8rem;">
-      <img src="static/images/fig_three_way_locomotion_metrics.png" alt="Three-way metrics">
-      <div class="caption">Three-way locomotion metrics summarising speed tracking, effort, and gait
-        quality for Planner / Planner-simplified / Ours.</div>
+        <img src="static/images/fig_three_way_locomotion_metrics.png" alt="Three-way metrics">
+        <div class="caption">Three-way locomotion metrics at the matched single-speed operating point
+          (~103.5&nbsp;mm/s): speed tracking, effort, and gait quality.</div></div></div>
     </div>
   </div>
 </section>
@@ -226,17 +236,96 @@
   </div>
 </section>
 
-<!-- ===================== TRAINING & ABLATION ===================== -->
+<!-- ===================== TRAINING ===================== -->
 <section class="section" style="background:#fff;">
   <div class="container is-max-desktop">
-    <div class="has-text-centered"><h2 class="title is-3">Training &amp; ablation</h2></div>
-    <div class="columns">
-      <div class="column is-half"><div class="fig-card">
-        <img src="static/images/fig_training_dynamics.png" alt="Training dynamics">
-        <div class="caption">Training dynamics of the CPG-RL policy.</div></div></div>
-      <div class="column is-half"><div class="fig-card">
-        <img src="static/images/fig_ablation_cot_distribution.png" alt="Ablation COT distribution">
-        <div class="caption">Ablation: cost-of-transport distribution across design choices.</div></div></div>
+    <div class="has-text-centered"><h2 class="title is-3">Training</h2></div>
+    <div class="fig-card">
+      <img src="static/images/fig_training_dynamics.png" alt="Training dynamics">
+      <div class="caption">Training dynamics of the CPG-RL (CDER) policy during reinforcement learning.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MULTI-VELOCITY ===================== -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="has-text-centered"><h2 class="title is-3">Multi-velocity results</h2></div>
+    <div class="fig-card">
+      <img src="static/images/fig_multispeed_comparison.png" alt="Multispeed comparison">
+      <div class="caption">Cost of transport and speed tracking across the commanded-velocity sweep
+        &mdash; Ours stays below both baselines throughout the operating range.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ABLATION ===================== -->
+<section class="section" style="background:#fff;">
+  <div class="container is-max-desktop">
+    <div class="has-text-centered"><h2 class="title is-3">Ablation</h2></div>
+
+    <div class="ablation-table-wrap">
+      <table class="table is-fullwidth is-striped ablation-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th><b>Ours</b></th>
+            <th><b>Ablation A</b><br><span class="is-size-7">(w/o &alpha;<sub>norm</sub>)</span></th>
+            <th><b>Ablation B</b><br><span class="is-size-7">(equal weights)</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="section-row"><td colspan="4"><i>Design components</i></td></tr>
+          <tr>
+            <td class="row-label">&alpha;<sub>norm</sub> (top weight)</td>
+            <td>&#10003;</td>
+            <td>&#10007;</td>
+            <td>&#10003;</td>
+          </tr>
+          <tr>
+            <td class="row-label">Analytical hierarchy</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+            <td>&#10007;</td>
+          </tr>
+          <tr class="section-row"><td colspan="4"><i>Steady-state locomotion metrics (20 episodes)</i></td></tr>
+          <tr>
+            <td class="row-label">Cost of Transport (dimensionless)</td>
+            <td class="metric-best">3.72 &plusmn; 0.03</td>
+            <td>4.25 &plusmn; 0.02</td>
+            <td>4.95 &plusmn; 0.02</td>
+          </tr>
+          <tr>
+            <td class="row-label">Forward speed (mm/s)</td>
+            <td class="metric-best">103.5 &plusmn; 0.2</td>
+            <td>74.2 &plusmn; 0.4</td>
+            <td>74.4 &plusmn; 0.9</td>
+          </tr>
+          <tr>
+            <td class="row-label">Forward distance (mm)</td>
+            <td class="metric-best">642 &plusmn; 1</td>
+            <td>460 &plusmn; 2</td>
+            <td>473 &plusmn; 5</td>
+          </tr>
+          <tr>
+            <td class="row-label">Lateral offset (mm)</td>
+            <td class="metric-best">12.8 &plusmn; 11.9</td>
+            <td>24.2 &plusmn; 9.4</td>
+            <td>15.0 &plusmn; 11.0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="ablation-caption">
+      CDER weight ablation: design-component status (&#10003; preserved, &#10007; removed) and
+      four-metric performance. Twenty deterministic episodes per policy; all metrics on the
+      steady-state window (first 2&nbsp;s transient discarded). Values are mean &plusmn; std;
+      bold marks the best per row.
+    </p>
+
+    <div class="fig-card" style="margin-top:1.2rem;">
+      <img src="static/images/fig_ablation_cot_distribution.png" alt="Ablation COT distribution">
+      <div class="caption">Cost-of-transport distribution across ablation variants.</div>
     </div>
   </div>
 </section>
