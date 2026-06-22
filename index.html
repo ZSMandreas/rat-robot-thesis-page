@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Energy-Efficient Trot Gait for a Quadruped Rat Robot via Reinforcement Learning</title>
+
+  <!-- SEO / social -->
+  <meta name="description" content="Master thesis project page: a learned (RL) controller that produces a lower cost-of-transport trot gait for a quadruped rat robot, compared against CPG planner baselines.">
+  <meta property="og:title" content="Energy-Efficient Trot Gait for a Quadruped Rat Robot via Reinforcement Learning">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="static/images/fig_ours_efficiency_story.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="static/images/fig_ours_efficiency_story.png">
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+</head>
+
+<body>
+
+<!-- ===================== HERO / TITLE ===================== -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-2 publication-title">
+            Energy-Efficient Trot Gait for a Quadruped Rat Robot<br>via Reinforcement Learning
+          </h1>
+          <p class="subtitle is-5" style="margin-top:-0.4rem;color:#666;">
+            A learned controller that lowers the cost of transport against CPG planner baselines
+          </p>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><a href="#">Your Name</a></span>
+          </div>
+          <div class="is-size-6 publication-authors" style="margin-top:0.4rem;color:#555;">
+            Master Thesis &middot; Your University
+          </div>
+
+          <!-- LINKS (replace # with real URLs) -->
+          <div class="column has-text-centered" style="margin-top:1.2rem;">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="#" class="external-link button is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Thesis</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-rounded is-dark">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span><span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/ZSMandreas/Pathological-gait-generation-for-rat-robot-with-spine-based-damage-control"
+                   class="external-link button is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span><span>Code</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== OVERVIEW / TEASER ===================== -->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" class="hero-banner-video" autoplay muted loop playsinline data-lazy>
+        <source src="static/videos/compare_steady.mp4" type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered" style="margin-top:0.9rem;">
+        <b>Overview.</b> Steady-state trot at the matched speed (~103.5&nbsp;mm/s). Left&nbsp;to&nbsp;right:
+        <b>Planner</b>, <b>Planner-simplified</b>, and <b>Ours</b> (learned). The learned policy reaches
+        the same speed with a visibly cleaner, lower-effort gait.
+      </h2>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ABSTRACT ===================== -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We study energy-efficient locomotion for a small quadruped <em>rat robot</em> performing a
+            trot gait. As a learning-free reference we use a Central Pattern Generator (CPG)
+            <b>Planner</b> and an open-loop <b>Planner-simplified</b> variant. We then train a
+            reinforcement-learning controller (<b>Ours</b>) that tracks the same commanded velocity
+            while minimising actuation effort.
+          </p>
+          <p>
+            At a matched forward speed of ~103.5&nbsp;mm/s, the learned controller attains a
+            <b>cost of transport (COT) of 3.72</b>, versus <b>5.69</b> for the Planner and
+            <b>4.67</b> for the Planner-simplified baseline &mdash; roughly a <b>35% reduction</b>
+            relative to the planner. An energy-balance audit (closure validation) confirms the savings
+            come from less negative/antagonistic work and lower contact and friction dissipation,
+            rather than from measurement artefacts. This page collects the side-by-side locomotion
+            clips, the per-component power and foot-trajectory animations, and the quantitative figures
+            behind these results.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== APPROACH ===================== -->
+<section class="section" style="background:#fff;">
+  <div class="container is-max-desktop">
+    <div class="has-text-centered"><h2 class="title is-3">Approach</h2></div>
+
+    <div class="content has-text-justified">
+      <h3 class="title is-5">CPG planner baselines</h3>
+      <p>
+        The <b>Planner</b> generates a trot rhythm with a Central Pattern Generator and closes the loop
+        on the robot state; the <b>Planner-simplified</b> runs the same rhythm open-loop. Both serve as
+        learning-free references at the same commanded velocity and gait frequency.
+      </p>
+
+      <h3 class="title is-5">Learned controller (Ours)</h3>
+      <p>
+        A reinforcement-learning policy is trained to track the commanded velocity while penalising
+        mechanical effort. It discovers a trot that keeps propulsion useful and reduces antagonistic
+        (negative) work and contact losses, yielding the lowest cost of transport at matched speed.
+      </p>
+
+      <h3 class="title is-5">Energy-balance audit</h3>
+      <p>
+        To make the efficiency claim auditable, a per-substep energy decomposition (actuator work,
+        joint damping, contact friction and normal dissipation) is closed against the change in
+        kinetic/potential energy over a multi-stride steady window. The closure residual stays below
+        0.5%, attributing the savings to physically meaningful channels rather than artefacts.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KEY RESULTS ===================== -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="has-text-centered">
+      <h2 class="title is-3">Key result: lowest cost of transport</h2>
+      <p class="subtitle is-6" style="color:#666;">Steady-state window, matched speed ~103.5&nbsp;mm/s</p>
+    </div>
+
+    <div class="columns is-vcentered">
+      <div class="column is-half">
+        <table class="table is-fullwidth is-striped is-hoverable metric-table">
+          <thead><tr><th>Controller</th><th>Steady COT&nbsp;&darr;</th><th>Speed (mm/s)</th></tr></thead>
+          <tbody>
+            <tr><td>Planner</td><td>5.69</td><td>103.3</td></tr>
+            <tr><td>Planner-simplified</td><td>4.67</td><td>104.1</td></tr>
+            <tr><td><b>Ours (learned)</b></td><td class="metric-best">3.72</td><td>103.5</td></tr>
+          </tbody>
+        </table>
+        <p class="is-size-7 has-text-grey">
+          Lower COT is better. Ours is ~35% below the Planner and ~20% below the Planner-simplified
+          baseline at the same speed.
+        </p>
+      </div>
+      <div class="column is-half">
+        <div class="fig-card">
+          <img src="static/images/fig_ours_efficiency_story.png" alt="Efficiency story">
+          <div class="caption">Where the energy goes: the learned controller trades costly
+            negative/contact work for useful propulsion.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:0.5rem;">
+      <div class="column is-half">
+        <div class="fig-card">
+          <img src="static/images/fig_multi_velocity_cot_vs_speed.png" alt="COT vs speed">
+          <div class="caption">COT versus forward speed across the velocity sweep &mdash; Ours stays
+            below both baselines throughout.</div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="fig-card">
+          <img src="static/images/fig_three_way_locomotion_metrics.png" alt="Three-way metrics">
+          <div class="caption">Three-way locomotion metrics summarising speed tracking, effort, and
+            gait quality.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VIDEOS ===================== -->
+<section class="section" style="background:#fff;">
+  <div class="container is-max-desktop">
+    <div class="has-text-centered"><h2 class="title is-3">Videos</h2></div>
+
+    <h3 class="title is-5" style="margin-top:1rem;">Locomotion comparison</h3>
+    <div class="columns">
+      <div class="column is-half">
+        <div class="video-card">
+          <video controls muted loop playsinline data-lazy>
+            <source src="static/videos/compare_steady.mp4" type="video/mp4"></video>
+          <div class="caption">Steady-state comparison: Planner / Planner-simplified / Ours at the
+            matched speed.</div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="video-card">
+          <video controls muted loop playsinline data-lazy>
+            <source src="static/videos/slide_compare_3in1.mp4" type="video/mp4"></video>
+          <div class="caption">3-in-1 slide: locomotion + component power + foot trajectory,
+            phase-synchronised over two gait cycles.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="title is-5" style="margin-top:1rem;">Synchronised analysis</h3>
+    <div class="columns">
+      <div class="column is-half">
+        <div class="video-card">
+          <video controls muted loop playsinline data-lazy>
+            <source src="static/videos/fig_component_power_3way_anim.mp4" type="video/mp4"></video>
+          <div class="caption">Component-power animation: per-joint power flow over the gait cycle for
+            all three controllers.</div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="video-card">
+          <video controls muted loop playsinline data-lazy>
+            <source src="static/videos/fig_foot_traj_3way_anim.mp4" type="video/mp4"></video>
+          <div class="caption">Foot-trajectory animation: swing/stance loops traced over the stride.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="title is-5" style="margin-top:1rem;">Additional velocity &amp; baselines</h3>
+    <div class="columns is-multiline">
+      <div class="column is-half">
+        <div class="video-card">
+          <video controls muted loop playsinline data-lazy>
+            <source src="static/videos/render_ours_vcmd0.06.mp4" type="video/mp4"></video>
+          <div class="caption">Ours @ v<sub>cmd</sub>=0.06&nbsp;m/s.</div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="video-card">
+          <video controls muted loop playsinline data-lazy>
+            <source src="static/videos/render_baseline_vcmd0.06.mp4" type="video/mp4"></video>
+          <div class="caption">Baseline @ v<sub>cmd</sub>=0.06&nbsp;m/s.</div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="video-card">
+          <video controls muted loop playsinline data-lazy>
+            <source src="static/videos/m3_planner_preview.mp4" type="video/mp4"></video>
+          <div class="caption">Planner preview rollout.</div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="video-card">
+          <video controls muted loop playsinline data-lazy>
+            <source src="static/videos/planner_baseline_preview.mp4" type="video/mp4"></video>
+          <div class="caption">Planner baseline preview rollout.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FIGURE GALLERY ===================== -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="has-text-centered">
+      <h2 class="title is-3">Analysis &amp; figures</h2>
+      <p class="subtitle is-6" style="color:#666;">Energy decomposition, gait mechanism, and foot mechanics</p>
+    </div>
+
+    <div class="columns is-multiline">
+      <div class="column is-half"><div class="fig-card">
+        <img src="static/images/fig_work_decomposition_quantitative.png" alt="Work decomposition">
+        <div class="caption">Quantitative work decomposition: positive vs negative actuator work and
+          dissipation channels.</div></div></div>
+      <div class="column is-half"><div class="fig-card">
+        <img src="static/images/fig_useful_wasted_breakdown.png" alt="Useful vs wasted">
+        <div class="caption">Useful versus wasted energy per metre travelled.</div></div></div>
+      <div class="column is-half"><div class="fig-card">
+        <img src="static/images/fig_stride_power_shaded.png" alt="Stride power">
+        <div class="caption">Stride-resolved power profile (mean &plusmn; spread) across the gait cycle.</div></div></div>
+      <div class="column is-half"><div class="fig-card">
+        <img src="static/images/fig_foot_traj_3way_ground.png" alt="Foot trajectory ground frame">
+        <div class="caption">Foot trajectories: fore/aft loop shape with height above the ground.</div></div></div>
+      <div class="column is-half"><div class="fig-card">
+        <img src="static/images/fig_foot_traj_colored_by_work.png" alt="Foot traj colored by work">
+        <div class="caption">Foot trajectory coloured by instantaneous mechanical work.</div></div></div>
+      <div class="column is-half"><div class="fig-card">
+        <img src="static/images/fig_mechanism_dashboard.png" alt="Mechanism dashboard">
+        <div class="caption">Mechanism dashboard linking gait kinematics to the efficiency gain.</div></div></div>
+      <div class="column is-half"><div class="fig-card">
+        <img src="static/images/fig_multi_velocity_three_way_panel.png" alt="Multi-velocity panel">
+        <div class="caption">Multi-velocity three-way panel across the commanded-speed sweep.</div></div></div>
+      <div class="column is-half"><div class="fig-card">
+        <img src="static/images/fig_ours_advantage_delta.png" alt="Advantage delta">
+        <div class="caption">Per-velocity advantage of Ours over the baselines.</div></div></div>
+      <div class="column is-half"><div class="fig-card">
+        <img src="static/images/fig_single_speed_three_way_anchor.png" alt="Single speed anchor">
+        <div class="caption">Single-speed anchor comparison at the matched operating point.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BIBTEX ===================== -->
+<section class="section" id="BibTeX" style="background:#fff;">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@mastersthesis{yourname_ratrobot_thesis,
+  title   = {Energy-Efficient Trot Gait for a Quadruped Rat Robot via Reinforcement Learning},
+  author  = {Your Name},
+  school  = {Your University},
+  year    = {2026}
+}</code></pre>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8 has-text-centered content">
+        <p>
+          This page was built using the
+          <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project
+          Page Template</a>, which was adopted from the
+          <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> project page. You are free
+          to borrow the source code of this website; please link back to this page in the footer.
+          Licensed under <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="static/js/index.js"></script>
+</body>
+</html>
