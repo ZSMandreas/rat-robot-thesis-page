@@ -290,34 +290,37 @@
       </div>
     </div>
 
-    <h3 class="title is-5" style="margin-top:1rem;">Additional velocity &amp; baselines</h3>
+    <h3 class="title is-5" style="margin-top:1rem;">Controllers &amp; baselines (single-view rollouts)</h3>
+    <p class="is-size-7 has-text-grey" style="margin-bottom:0.8rem;">
+      All four clips are rendered with the identical sagittal camera and steady-state window,
+      so the gaits can be compared directly.</p>
     <div class="columns is-multiline">
       <div class="column is-half">
         <div class="video-card">
           <video controls muted loop playsinline data-lazy>
-            <source src="static/videos/render_ours_vcmd0.06.mp4" type="video/mp4"></video>
-          <div class="caption">Ours @ v<sub>cmd</sub>=0.06&nbsp;m/s.</div>
+            <source src="static/videos/preview_ours.mp4" type="video/mp4"></video>
+          <div class="caption">Ours (CPG-RL) preview rollout.</div>
         </div>
       </div>
       <div class="column is-half">
         <div class="video-card">
           <video controls muted loop playsinline data-lazy>
-            <source src="static/videos/render_baseline_vcmd0.06.mp4" type="video/mp4"></video>
-          <div class="caption">Baseline @ v<sub>cmd</sub>=0.06&nbsp;m/s.</div>
+            <source src="static/videos/preview_w2_baseline.mp4" type="video/mp4"></video>
+          <div class="caption">w2 baseline (earlier RL reward variant) preview rollout.</div>
         </div>
       </div>
       <div class="column is-half">
         <div class="video-card">
           <video controls muted loop playsinline data-lazy>
-            <source src="static/videos/m3_planner_preview.mp4" type="video/mp4"></video>
-          <div class="caption">Planner preview rollout.</div>
+            <source src="static/videos/preview_planner.mp4" type="video/mp4"></video>
+          <div class="caption">Planner (M3) preview rollout.</div>
         </div>
       </div>
       <div class="column is-half">
         <div class="video-card">
           <video controls muted loop playsinline data-lazy>
-            <source src="static/videos/planner_baseline_preview.mp4" type="video/mp4"></video>
-          <div class="caption">Planner baseline preview rollout.</div>
+            <source src="static/videos/preview_planner_simplified.mp4" type="video/mp4"></video>
+          <div class="caption">Planner-simplified (M4) preview rollout.</div>
         </div>
       </div>
     </div>
