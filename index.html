@@ -338,61 +338,49 @@
   <div class="container is-max-desktop">
     <div class="has-text-centered"><h2 class="title is-3">Videos</h2></div>
 
-    <h3 class="title is-5" style="margin-top:1rem;">Synchronised analysis</h3>
-    <div class="video-card" style="margin-bottom:1rem;">
-      <video controls muted loop playsinline data-lazy>
-        <source src="static/videos/compare_topdown_power.mp4" type="video/mp4"></video>
-      <div class="caption">Top-down three-way comparison with instantaneous CDER power
-        (W⁺, |W⁻|, damping, friction, normal contact), phase-synchronised over a 6&nbsp;s steady clip.</div>
-    </div>
-    <div class="columns">
+    <div class="columns videos-two-col is-vcentered">
       <div class="column is-half">
-        <div class="video-card">
+        <h3 class="title is-5">Synchronised analysis</h3>
+        <div class="video-card video-card-lg">
           <video controls muted loop playsinline data-lazy>
-            <source src="static/videos/fig_component_power_3way_anim.mp4" type="video/mp4"></video>
-          <div class="caption">Component-power animation over the gait cycle.</div>
+            <source src="static/videos/compare_topdown_power.mp4" type="video/mp4"></video>
+          <div class="caption">Top-down three-way comparison with instantaneous CDER power
+            (W⁺, |W⁻|, damping, friction, normal contact), phase-synchronised over a 6&nbsp;s steady clip.</div>
         </div>
       </div>
       <div class="column is-half">
-        <div class="video-card">
-          <video controls muted loop playsinline data-lazy>
-            <source src="static/videos/fig_foot_traj_3way_anim.mp4" type="video/mp4"></video>
-          <div class="caption">Foot-trajectory animation over the stride.</div>
-        </div>
-      </div>
-    </div>
-
-    <h3 class="title is-5" style="margin-top:1rem;">Controllers &amp; baselines (single-view rollouts)</h3>
-    <p class="is-size-7 has-text-grey" style="margin-bottom:0.8rem;">
-      All four clips are rendered with the identical sagittal camera and steady-state window,
-      so the gaits can be compared directly.</p>
-    <div class="columns is-multiline">
-      <div class="column is-half">
-        <div class="video-card">
-          <video controls muted loop playsinline data-lazy>
-            <source src="static/videos/preview_ours.mp4" type="video/mp4"></video>
-          <div class="caption">Ours (CPG-RL) preview rollout.</div>
-        </div>
-      </div>
-      <div class="column is-half">
-        <div class="video-card">
-          <video controls muted loop playsinline data-lazy>
-            <source src="static/videos/preview_w2_baseline.mp4" type="video/mp4"></video>
-          <div class="caption">w2 baseline (earlier RL reward variant) preview rollout.</div>
-        </div>
-      </div>
-      <div class="column is-half">
-        <div class="video-card">
-          <video controls muted loop playsinline data-lazy>
-            <source src="static/videos/preview_planner.mp4" type="video/mp4"></video>
-          <div class="caption">Planner (M3) preview rollout.</div>
-        </div>
-      </div>
-      <div class="column is-half">
-        <div class="video-card">
-          <video controls muted loop playsinline data-lazy>
-            <source src="static/videos/preview_planner_simplified.mp4" type="video/mp4"></video>
-          <div class="caption">Planner-simplified (M4) preview rollout.</div>
+        <h3 class="title is-5">Controllers &amp; baselines</h3>
+        <p class="is-size-7 has-text-grey" style="margin-bottom:0.8rem;">
+          Single-view sagittal rollouts at the same steady-state window.</p>
+        <div class="columns is-multiline is-mobile">
+          <div class="column is-half">
+            <div class="video-card">
+              <video controls muted loop playsinline data-lazy>
+                <source src="static/videos/preview_ours.mp4" type="video/mp4"></video>
+              <div class="caption">Ours (CPG-RL).</div>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="video-card">
+              <video controls muted loop playsinline data-lazy>
+                <source src="static/videos/preview_w2_baseline.mp4" type="video/mp4"></video>
+              <div class="caption">w2 baseline.</div>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="video-card">
+              <video controls muted loop playsinline data-lazy>
+                <source src="static/videos/preview_planner.mp4" type="video/mp4"></video>
+              <div class="caption">Planner (M3).</div>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="video-card">
+              <video controls muted loop playsinline data-lazy>
+                <source src="static/videos/preview_planner_simplified.mp4" type="video/mp4"></video>
+              <div class="caption">Planner-simplified (M4).</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
